@@ -45,9 +45,9 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 	case http.MethodGet:
 		perf = c.c.Get(path).Params(request)
 	case http.MethodPost:
-		perf = c.c.Post(path).Json(request)
-	case http.MethodDelete:
 		perf = c.c.Post(path).Params(request)
+	case http.MethodDelete:
+		perf = c.c.Delete(path).Params(request)
 	default:
 		r.Error = fmt.Errorf("forbidden method: %s", method)
 		return
@@ -63,12 +63,8 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 			perf.Request.Header = make(http.Header)
 		}
 		switch method {
-		case http.MethodGet:
-			c.s.Get(perf)
-		case http.MethodPost:
-			c.s.Post(perf)
-		case http.MethodDelete:
-			c.s.Get(perf) //same get
+		case http.MethodGet, http.MethodPost, http.MethodDelete:
+			c.s.Sign(perf)
 		}
 	}
 	h := perf.Do()

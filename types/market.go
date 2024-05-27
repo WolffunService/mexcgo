@@ -91,5 +91,5 @@ type OrderResponse struct {
 	Time                int64         `json:"time"`
 	TimeInForce         string        `json:"timeInForce"`
 	Type                OrderType     `json:"type"`
-	UpdateTime          string        `json:"updateTime"`
+	UpdateTime          int64         `json:"updateTime"`
 }

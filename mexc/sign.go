@@ -28,22 +28,7 @@ func NewSign(key, secret string) *Sign {
 	return o
 }
 
-func (o *Sign) Post(perf *uhttp.Performer) {
-	if perf.Request.Params == nil {
-		perf.Request.Params = make(url.Values)
-	}
-	perf.Request.Params.Set("timestamp", strconv.FormatInt(time.Now().UnixMilli(), 10))
-
-	encodeSortBody(&perf.Request.Params, perf.Request.Body)
-	encodedParams := encodeSortParams(perf.Request.Params)
-	signature := o.signHmac(encodedParams, o.Secret)
-	perf.Request.Params.Set("signature", signature)
-	o.header(perf.Request.Header)
-
-	perf.Request.Body = nil
-}
-
-func (o *Sign) Get(perf *uhttp.Performer) {
+func (o *Sign) Sign(perf *uhttp.Performer) {
 	if perf.Request.Params == nil {
 		perf.Request.Params = make(url.Values)
 	}

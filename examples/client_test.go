@@ -50,12 +50,12 @@ func TestExchangeInfo(t *testing.T) {
 
 func TestPlaceOrder(t *testing.T) {
 	c = mexc.NewClient().WithAuth(apiKey, apiSecret)
-	res := c.NewOrderTest(types.NewOrder{
+	res := c.NewOrder(types.NewOrder{
 		Symbol:   "THGUSDT",
-		Side:     types.SideTypeBuy,
+		Side:     types.SideTypeSell,
 		Type:     types.OrderTypeLimit,
-		Quantity: 100,
-		Price:    0.05,
+		Quantity: 6000,
+		Price:    0.0888,
 	})
 
 	if !res.Ok() {
@@ -79,6 +79,17 @@ func TestGetOpenOrders(t *testing.T) {
 func TestGetAllOrders(t *testing.T) {
 	c = mexc.NewClient().WithAuth(apiKey, apiSecret)
 	res := c.GetAllOrders(types.AllOrderQuery{Symbol: "THGUSDT"})
+
+	if !res.Ok() {
+		t.Fatal(res.Error)
+	}
+	t.Log(res.Data)
+}
+
+func TestCancelOrder(t *testing.T) {
+	c = mexc.NewClient().WithAuth(apiKey, apiSecret)
+	orderId := "C02__423626447278653441018"
+	res := c.CancelOrder(types.CancelOrder{Symbol: "THGUSDT", OrderId: orderId})
 
 	if !res.Ok() {
 		t.Fatal(res.Error)
