@@ -1,6 +1,6 @@
 package mexc
 
-import "mexcgo/types"
+import "github.com/WolffunService/mexcgo/types"
 
 type defaultStruct struct {
 }
