@@ -1,8 +1,8 @@
 package examples
 
 import (
-	"mexcgo/mexc"
-	"mexcgo/types"
+	"github.com/WolffunService/mexcgo/mexc"
+	"github.com/WolffunService/mexcgo/types"
 	"os"
 	"testing"
 )

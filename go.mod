@@ -1,4 +1,4 @@
-module mexcgo
+module github.com/WolffunService/mexcgo
 
 go 1.22
 

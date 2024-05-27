@@ -1,7 +1,7 @@
 package mexc
 
 import (
-	"mexcgo/types"
+	"github.com/WolffunService/mexcgo/types"
 )
 
 func (o *Client) GetOrderBook(mq types.OrderBookQuery) Response[types.Orderbook] {
