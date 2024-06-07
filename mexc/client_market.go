@@ -32,3 +32,7 @@ func (o *Client) GetAllOrders(req types.AllOrderQuery) Response[[]types.OrderRes
 func (o *Client) QueryOrder(req types.QueryOrder) Response[types.OrderResponse] {
 	return Get(o, "order", req, forward[types.OrderResponse])
 }
+
+func (o *Client) BatchOrders(req types.BatchOrders) Response[types.BatchOrderResponse] {
+	return Post(o, "batchOrders", req, forward[types.BatchOrderResponse])
+}

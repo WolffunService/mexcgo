@@ -14,7 +14,7 @@ const (
 	OrderTypeMarket OrderType = "MARKET"
 	//LIMIT_MAKER (Limit maker order)
 	//IMMEDIATE_OR_CANCEL (Immediate or cancel order)
-	//FILL_OR_KILL (Fill or kill order)
+	FILL_OR_KILL OrderType = "FILL_OR_KILL" // (Fill or kill order)
 )
 
 type OrderStatus string

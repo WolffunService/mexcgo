@@ -1,9 +1,14 @@
 package mexc
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/msw-x/moon/refl"
+	"github.com/msw-x/moon/ustring"
 	"net/http"
+	"net/url"
+	"reflect"
 
 	"github.com/msw-x/moon/uhttp"
 )
@@ -45,7 +50,8 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 	case http.MethodGet:
 		perf = c.c.Get(path).Params(request)
 	case http.MethodPost:
-		perf = c.c.Post(path).Params(request)
+		//perf = c.c.Post(path).Params(request)
+		perf = ParamsCustom(c.c.Post(path), request)
 	case http.MethodDelete:
 		perf = c.c.Delete(path).Params(request)
 	default:
@@ -91,5 +97,45 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 		r.Error = h.Error
 		r.NetError = true
 	}
+	return
+}
+
+func ParamsCustom(o *uhttp.Performer, s any) *uhttp.Performer {
+	refl.WalkOnTagsAny(s, "url", func(v any, name string, flags []string) {
+		param(o, name, v, OmitEmpty(flags))
+	})
+	return o
+}
+
+func param(o *uhttp.Performer, name string, value any, omitempty bool) {
+	if o.Request.Params == nil {
+		o.Request.Params = make(url.Values)
+	}
+	if v, omit := Marshal(value, omitempty); !omit {
+		name = ustring.TitleLowerCase(name)
+		if reflect.TypeOf(value).Kind() == reflect.Slice {
+			elems, _ := json.Marshal(value)
+			o.Request.Params.Set(name, string(elems))
+			return
+		}
+		o.Request.Params.Set(name, v)
+	}
+}
+
+func OmitEmpty(flags []string) bool {
+	for _, flag := range flags {
+		if flag == "omitempty" {
+			return true
+		}
+	}
+	return false
+}
+func IsEmpty(s string) bool {
+	return s == "" || s == "0"
+}
+
+func Marshal(v any, omitempty bool) (s string, omit bool) {
+	s = fmt.Sprint(v)
+	omit = omitempty && IsEmpty(s)
 	return
 }

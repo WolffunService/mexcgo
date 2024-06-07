@@ -93,3 +93,9 @@ type OrderResponse struct {
 	Type                OrderType     `json:"type"`
 	UpdateTime          int64         `json:"updateTime"`
 }
+
+type BatchOrders struct {
+	BatchOrders []NewOrder
+}
+
+type BatchOrderResponse []OrderResponse
