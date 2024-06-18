@@ -88,7 +88,7 @@ func TestGetAllOrders(t *testing.T) {
 
 func TestCancelOrder(t *testing.T) {
 	c = mexc.NewClient().WithAuth(apiKey, apiSecret)
-	orderId := "C02__423626447278653441018"
+	orderId := ""
 	res := c.CancelOrder(types.CancelOrder{Symbol: "THGUSDT", OrderId: orderId})
 
 	if !res.Ok() {
