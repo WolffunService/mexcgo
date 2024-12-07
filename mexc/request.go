@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/msw-x/moon/refl"
-	"github.com/msw-x/moon/ustring"
 	"net/http"
 	"net/url"
 	"reflect"
+
+	"github.com/msw-x/moon/refl"
+	"github.com/msw-x/moon/ustring"
 
 	"github.com/msw-x/moon/uhttp"
 )
@@ -83,7 +84,7 @@ func req[R, T any](c *Client, method string, path string, request any, transform
 			raw := new(R)
 			err := h.Json(raw)
 			if err != nil {
-				r.Error = err
+				r.Error = fmt.Errorf("json decode error: %s - %s", err, h.BodyString())
 				return
 			}
 			if r.Ok() {
