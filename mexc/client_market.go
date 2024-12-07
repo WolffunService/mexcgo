@@ -25,6 +25,10 @@ func (o *Client) GetOpenOrders(mq types.OpenOrderQuery) Response[[]types.OrderRe
 	return Get(o, "openOrders", mq, forward[[]types.OrderResponse])
 }
 
+func (o *Client) CancelAllOpenOrders(mq types.OpenOrderQuery) Response[[]types.OrderResponse] {
+	return Delete(o, "openOrders", mq, forward[[]types.OrderResponse])
+}
+
 func (o *Client) GetAllOrders(req types.AllOrderQuery) Response[[]types.OrderResponse] {
 	return Get(o, "allOrders", req, forward[[]types.OrderResponse])
 }
